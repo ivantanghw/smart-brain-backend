@@ -99,19 +99,22 @@ app.post('/register', (req, res) => {
 // Get user based on id
 app.get('/profile/:id', (req, res) => {
     const { id } = req.params;
-    let found = false
     db.select('*').from('users').where({'id': id})
-        .then(user =>
-        console.log(user[0]));
-    // database.users.forEach(user => {
-    //     if (user.id === id) {
-    //         found = true;
-    //         return res.json(user);
-    //     } 
-    // })
-    if (!found) {
-        res.status(400).json('User not found')
-    }
+        .then(user => {
+            if (user.length) {
+                res.json(user[0])
+            } else {
+                res.status(400).json('User Not Found')
+            }
+        })
+        .catch(err => res.status(400).json('Error getting user'))
+    /* database.users.forEach(user => {
+         if (user.id === id) {
+             found = true;
+             return res.json(user);
+         } 
+        })
+    */
 })
 
 // Update the number of "entries"
