@@ -12,7 +12,7 @@ const profile = require('./controllers/profile');
 const {ClarifaiStub, grpc} = require("clarifai-nodejs-grpc");
 const stub = ClarifaiStub.grpc();
 const metadata = new grpc.Metadata();
-metadata.set("authorization", "Key 3ef7c5cbf81b4bcc863b3abef3fc0834");
+metadata.set("authorization", "Key {API_KEY_CLARIFAI}");
 
 const db = knex({
     client: 'pg',
@@ -35,7 +35,6 @@ app.get('/', (req, res) => {
     .then(users => {res.json(users)})
     .catch(err => res.status(400).json('Unable to access database'))
 })
-
 app.post('/signin', (req, res) => { signin.handleSignin(req, res, db, bcrypt) })
 app.post('/register', register.handleRegister(db, bcrypt)) 
 app.get('/profile/:id', (req, res) => { profile.handleProfile(req, res, db) })
@@ -75,5 +74,5 @@ app.post('/imageUrl', (req, res) => {
 })
 
 app.listen(3000, () => {
-    console.log('App in running on port 3001')
+    console.log('App in running on port 3000')
 });
